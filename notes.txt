@@ -1,0 +1,303 @@
+Intro
+======
+
+Buzzword soup explained
+------------------------
+JSX 
+- language/syntax that lets you use <a href="/example"></a> as a native part of javascript
+props
+- component properties set when rendering
+state
+- a local dictionary of values available in most components
+functional components
+- react components expressed as pure functions that take prpos and return markup
+webpack
+- module packager for js.
+- more convenient to organize code into multiple files
+- provides cool plugins
+
+
+
+D3 the good parts
+===========================
+
+3 key insights that help you learn D3.js from scratch
+------------------------------------------------------
+
+1. All D3 examples are split into two parts
+- Data manipulation
+- DOM manipulation
+
+2. Scales
+function that match domain to range
+
+ordinal scale
+- map one to another
+- triangle to red, rectrangle to orange
+- like a hash map, mapping keys directly to their values
+.domain(['triangle', 'rectangle', 'polygon'])
+.range(['red', 'orange', 'green'])
+
+linear scale
+- used for translating data values to pixel values
+- beginning of domain translate to beginning of range
+- you can call anything in between or outside of the range and it will calc the range
+.domain([0, 200])
+.range([10, 500])
+- we can even add in multiple points and not just the beginning and end
+.domain([0, 200, 300])
+.range([10, 500, 5000])
+
+3. D3 layouts
+- prebuilt calculations
+- data manipulations
+- they don't render, they just give you all the information you need
+- transform your data into a bunch of coordinates so you can render
+
+Recap
+transitions in d3 are js transitions
+- you have a lot of control over the transitions
+- the downside is that it is not GPU optimized
+
+3 insights you need to understand for any examples found in the wild
+- code is split into data and DOM manipulation
+- scales are great and used a lot
+- you're always in control of rendering
+
+
+
+How React makes D3 easier
+===========================
+
+React + D3
+-----------
+readability
+rendering 
+you make the code as easy to understand as possible
+
+viz uses SVG 
+- an XML based image format that lets us describe images in terms of mathematical shapes
+
+<svg width="800" height="600">
+  <rect width="100" height="200" x="50" y="20" />
+</svg>
+- these 4 lines create an SVG image with a black rectangle at coordinates (50, 20) that is 100x200 pixels large
+- black fill with no borders is default for SVG shapes
+
+SVG
+- perfect for data viz on web
+- works in all browsers
+- renders without blurring or artifacts on all screens
+- supports animation
+- user interaction
+
+SVG con
+- not GPU accelerated
+- gets slow when you have many thousands of elements on screen
+- solve this problem by rndering bitmap images with canvas
+
+The basic idea
+- React owns the DOM
+- D3 calc properties
+
+D3 wants to control the DOM and it has a lot of internal states
+React wants to be stateless
+
+D3 has enter update exit cycle
+
+D3 can calc anything for you
+- all you have to do is draw it out
+
+We leverage React for SVG structure and rendering optimizations
+D3 for its mathematical and visualization functions
+
+
+What about using existing libraries?
+------------------------------------
+just need a chart - excel
+
+using a library
+- need a dynamic chart
+- quickest way to achieve the benefits of integrating React with D3 is to use a library
+- basic charts
+
+Where libraries become a problem
+- move beyond author's idea of how things are done
+- custom features
+- viz arent just charts
+- disabling this or that default behavior
+
+Some good libraries
+Victory.js
+- fake data when there is no data input
+- supports react native
+- low level component for basic charting
+- reimplements a lot of D3's API
+- basic chart without a lot of customizations
+
+Recharts
+- everything is animated
+- hard to disable animation
+
+Nivo
+- all sorts of bells and whistles
+- hard to disable
+
+VX
+- created at a guy from airbnb
+- most flexible library
+- you have lots of control
+- This code creates value accessor methods, 
+- D3 scales
+- iterates over an array of data and renders a <Bar> for each. 
+- The bar gets a bunch of props
+
+When not to use a library
+- long term
+- something custom
+
+
+The building blocks
+==================
+
+D3 Blackbox components
+----------------------
+
+D3 black box
+- good for axis 
+-- D3 comes with axis generator bundled inside and theyre difficult to build from scratch
+- wrappers around a D3 visualization
+- any example from the internet and wrap it in a React component
+- D3 controls the DOM, that's why it's called the Blackbox
+
+Cons
+- no render engine
+- no tree diffing
+- no dev tools to inspect what's going on
+
+Under the hood
+- React renders an anchor element
+- D3 hijacks it and puts stuff in
+- you manually re-render on props and state changes
+- throwing away and rebuilding the entire DOM subtree on each render
+- complex viz becomes a huge hit on performance
+
+class Axis extends Component {
+  // reference DOM element and lets us talk to the dom directly
+  gRef = React.createRef();
+
+  // ensures that our axis re-renders every time React's engine decides to render our component
+  componentDidMount() {
+    this.d3render();
+  }
+  componentDidUpdate() {
+    this.d3render();
+  }
+
+  d3render() {
+    const scale = d3.scaleLinear().domain([0, 10]).range([0, 200]);
+    const axis = d3.axisBottom(scale);
+
+    d3.select(this.gRef).call(axis);
+  }
+
+  render() {
+    return <g transform="translate(10, 30)" ref={this.gRef} />
+  }
+}
+
+HOC
+- a function that takes some params that creates a class and returns another component
+- great when you see multiple React components sharing similar code
+- rendering an anchor element
+- calling D3's render on updates
+
+// D3blackbox HOC
+function D3blackbox(D3render) {
+  return class Blackbox extends React.component {
+    anchor = React.createRef();
+
+    componentDidMount() {
+      D3render.call(this);
+    }
+    componentDidUpdate() {
+      D3render.call(this);
+    }
+
+    render() {
+      const { x, y } = this.props;
+      return <g transform={`translate(${x}, ${y})`} ref={this.anchor} />
+    }
+  }
+}
+
+// Axis
+const Axis = D3blackbox(function() {
+  const scale = d3.scaleLinear().domain([0, 10]).range([0, 200]);
+  const axis = d3.axisBottom(scale);
+
+  d3.select(this.anchor).call(axis);
+});
+
+
+D3blackbox magic trick – render anything in 30 seconds
+-------------------------------------------------------
+
+d3 v4
+tsv
+- fetch data and return as tab values
+
+v5 
+- convert it to use .then() instead of function(error, data)
+
+blackbox d3
+- have a lot of rerendering issues when there are a lot of elements on the screen
+- not scalable
+- good for quick prototypes
+
+
+Build scalable dataviz components with full integration
+-------------------------------------------------------
+this section builds up mental models for dataviz components through class-based approach
+
+goal
+- build controlled components that listen to their props and reconcile that with D3's desire to use a lot of internal states
+
+2 situations we find ourselves in
+- we know for a fact our components props never change
+- we think props could change
+
+scatterplot graph
+import d3
+// give a range and map over that range to add random data
+const data = d3.range(100).map(_ => [Math.random(), Math.random()]);
+
+// add svg area so that you can add your graphs
+<svg width="800" height="800">
+  // create component first with x y and data
+  <Scatterplot x={0} y={0} data={data} />
+</svg>
+
+class Scatterplot
+// without this all the plots are on top of each other cuz theyre all btw 0-1
+xScale = d3
+  .scaleLinear()
+  .domain([0, 1]) // data is random number between 0 and 1
+  .range([0, 300]); // spread it out on a range
+
+yScale = d3
+  .scaleLinear()
+  .domain([0, 1])
+  .range([0, 200]);
+
+render() {
+  const { x, y, data } = this.props;
+
+  // create a grouping that translate x and y position
+  return (
+    <g transform={`translate(${x}, ${y})} >
+      //xScale(x) spread it out on the x axis and same for yScale
+      { data.map(([x, y]) => <circle cx={this.xScale(x)} cy={this.yScale(y)} r="3" />)}
+    </g>
+  )
+})
