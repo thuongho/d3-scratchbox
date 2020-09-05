@@ -1,0 +1,166 @@
+The building blocks
+==================
+
+D3 Blackbox components
+----------------------
+
+D3 black box
+- good for axis 
+-- D3 comes with axis generator bundled inside and theyre difficult to build from scratch
+- wrappers around a D3 visualization
+- any example from the internet and wrap it in a React component
+- D3 controls the DOM, that's why it's called the Blackbox
+
+Cons
+- no render engine
+- no tree diffing
+- no dev tools to inspect what's going on
+
+Under the hood
+- React renders an anchor element
+- D3 hijacks it and puts stuff in
+- you manually re-render on props and state changes
+- throwing away and rebuilding the entire DOM subtree on each render
+- complex viz becomes a huge hit on performance
+
+class Axis extends Component {
+  // reference DOM element and lets us talk to the dom directly
+  gRef = React.createRef();
+
+  // ensures that our axis re-renders every time React's engine decides to render our component
+  componentDidMount() {
+    this.d3render();
+  }
+  componentDidUpdate() {
+    this.d3render();
+  }
+
+  d3render() {
+    const scale = d3.scaleLinear().domain([0, 10]).range([0, 200]);
+    const axis = d3.axisBottom(scale);
+
+    d3.select(this.gRef).call(axis);
+  }
+
+  render() {
+    return <g transform="translate(10, 30)" ref={this.gRef} />
+  }
+}
+
+HOC
+- a function that takes some params that creates a class and returns another component
+- great when you see multiple React components sharing similar code
+- rendering an anchor element
+- calling D3's render on updates
+
+// D3blackbox HOC
+function D3blackbox(D3render) {
+  return class Blackbox extends React.component {
+    anchor = React.createRef();
+
+    componentDidMount() {
+      D3render.call(this);
+    }
+    componentDidUpdate() {
+      D3render.call(this);
+    }
+
+    render() {
+      const { x, y } = this.props;
+      return <g transform={`translate(${x}, ${y})`} ref={this.anchor} />
+    }
+  }
+}
+
+// Axis
+const Axis = D3blackbox(function() {
+  const scale = d3.scaleLinear().domain([0, 10]).range([0, 200]);
+  const axis = d3.axisBottom(scale);
+
+  d3.select(this.anchor).call(axis);
+});
+
+
+D3blackbox magic trick – render anything in 30 seconds
+-------------------------------------------------------
+
+d3 v4
+tsv
+- fetch data and return as tab values
+
+v5 
+- convert it to use .then() instead of function(error, data)
+
+blackbox d3
+- have a lot of rerendering issues when there are a lot of elements on the screen
+- not scalable
+- good for quick prototypes
+
+
+Build scalable dataviz components with full integration
+-------------------------------------------------------
+this section builds up mental models for dataviz components through class-based approach
+
+goal
+- build controlled components that listen to their props and reconcile that with D3's desire to use a lot of internal states
+
+2 situations we find ourselves in
+- we know for a fact our components props never change
+- we think props could change
+
+scatterplot graph
+APPROACH:
+- stub out the basic setup
+- generate random data
+- stub out Scatterplot
+- set up D3 scales
+- render circles for each entry
+- add axes
+
+import d3
+// give a range and map over that range to add random data
+const data = d3.range(100).map(_ => [Math.random(), Math.random()]);
+
+// add svg area so that you can add your graphs
+<svg width="800" height="800">
+  // create component first with x y and data
+  <Scatterplot x={0} y={0} data={data} />
+</svg>
+
+class Scatterplot
+// without this all the plots are on top of each other cuz theyre all btw 0-1
+xScale = d3
+  .scaleLinear()
+  .domain([0, 1]) // data is random number between 0 and 1
+  .range([0, 300]); // spread it out on a range
+
+yScale = d3
+  .scaleLinear()
+  .domain([0, 1])
+  .range([0, 200]);
+
+render() {
+  const { x, y, data } = this.props;
+
+  // create a grouping that translate x and y position
+  return (
+    <g transform={`translate(${x}, ${y})} >
+      //xScale(x) spread it out on the x axis and same for yScale
+      { data.map(([x, y]) => <circle cx={this.xScale(x)} cy={this.yScale(y)} r="3" />)}
+    </g>
+  )
+})
+
+add width and height as props
+add Axis
+- make Scatterplot self contained
+- inject Axis into Scatterplot
+
+<Axis x={0} y={0} type="Left" scale={this.yScale} label="Y" />
+<Axis x={0} y={height} type="Bottom" scale={this.xScale} label="X" />
+
+When props don't change
+- no filtering your data or changing component size === D3 scales don't have to change
+- 2 step integration process
+-- set up D3 objects as class properties
+-- output SVG in render()

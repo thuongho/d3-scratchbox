@@ -1,0 +1,91 @@
+How React makes D3 easier
+===========================
+
+React + D3
+-----------
+readability
+rendering 
+you make the code as easy to understand as possible
+
+viz uses SVG 
+- an XML based image format that lets us describe images in terms of mathematical shapes
+
+<svg width="800" height="600">
+  <rect width="100" height="200" x="50" y="20" />
+</svg>
+- these 4 lines create an SVG image with a black rectangle at coordinates (50, 20) that is 100x200 pixels large
+- black fill with no borders is default for SVG shapes
+
+SVG
+- perfect for data viz on web
+- works in all browsers
+- renders without blurring or artifacts on all screens
+- supports animation
+- user interaction
+
+SVG con
+- not GPU accelerated
+- gets slow when you have many thousands of elements on screen
+- solve this problem by rndering bitmap images with canvas
+
+The basic idea
+- React owns the DOM
+- D3 calc properties
+
+D3 wants to control the DOM and it has a lot of internal states
+React wants to be stateless
+
+D3 has enter update exit cycle
+
+D3 can calc anything for you
+- all you have to do is draw it out
+
+We leverage React for SVG structure and rendering optimizations
+D3 for its mathematical and visualization functions
+
+
+What about using existing libraries?
+------------------------------------
+just need a chart - excel
+
+using a library
+- need a dynamic chart
+- quickest way to achieve the benefits of integrating React with D3 is to use a library
+- basic charts
+
+Where libraries become a problem
+- move beyond author's idea of how things are done
+- custom features
+- viz arent just charts
+- disabling this or that default behavior
+
+Some good libraries
+Victory.js
+- fake data when there is no data input
+- supports react native
+- low level component for basic charting
+- reimplements a lot of D3's API
+- basic chart without a lot of customizations
+
+Recharts
+- everything is animated
+- hard to disable animation
+
+Nivo
+- all sorts of bells and whistles
+- hard to disable
+
+VX
+- created at a guy from airbnb
+- most flexible library
+- you have lots of control
+- This code creates value accessor methods, 
+- D3 scales
+- iterates over an array of data and renders a <Bar> for each. 
+- The bar gets a bunch of props
+
+When not to use a library
+- long term
+- something custom
+
+

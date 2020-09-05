@@ -1,0 +1,68 @@
+Intro
+======
+
+Buzzword soup explained
+------------------------
+JSX 
+- language/syntax that lets you use <a href="/example"></a> as a native part of javascript
+props
+- component properties set when rendering
+state
+- a local dictionary of values available in most components
+functional components
+- react components expressed as pure functions that take prpos and return markup
+webpack
+- module packager for js.
+- more convenient to organize code into multiple files
+- provides cool plugins
+
+
+
+D3 the good parts
+===========================
+
+3 key insights that help you learn D3.js from scratch
+------------------------------------------------------
+
+1. All D3 examples are split into two parts
+- Data manipulation
+- DOM manipulation
+
+2. Scales
+function that match domain to range
+
+ordinal scale
+- map one to another
+- triangle to red, rectrangle to orange
+- like a hash map, mapping keys directly to their values
+.domain(['triangle', 'rectangle', 'polygon'])
+.range(['red', 'orange', 'green'])
+
+linear scale
+- used for translating data values to pixel values
+- beginning of domain translate to beginning of range
+- you can call anything in between or outside of the range and it will calc the range
+.domain([0, 200])
+.range([10, 500])
+- we can even add in multiple points and not just the beginning and end
+.domain([0, 200, 300])
+.range([10, 500, 5000])
+
+3. D3 layouts
+- prebuilt calculations
+- data manipulations
+- they don't render, they just give you all the information you need
+- transform your data into a bunch of coordinates so you can render
+
+Recap
+transitions in d3 are js transitions
+- you have a lot of control over the transitions
+- the downside is that it is not GPU optimized
+
+3 insights you need to understand for any examples found in the wild
+- code is split into data and DOM manipulation
+- scales are great and used a lot
+- you're always in control of rendering
+
+
+
