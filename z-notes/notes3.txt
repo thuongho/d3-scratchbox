@@ -164,3 +164,34 @@ When props don't change
 - 2 step integration process
 -- set up D3 objects as class properties
 -- output SVG in render()
+
+
+Props might update
+right now the component doesn't update when the props update
+convert App to class
+state with width and height
+onClick function that setState smaller 20%
+add to svg
+scales only update on instantiation
+move xScale to state in Scatterplot
+static getDerivedStateFromProps(props, state) {
+  let {xScale, yScale} = state;
+  xScale.range([0, props.width])
+  yScale.range([0, props.height])
+  // make sure we don't delete anything from state, return a new state
+  return {...state, xScale, yScale };
+}
+- updating the range so that they correspond to the state
+
+what's happening
+- when component first initialized, before loaded into DOM
+- define local component state with xScale and yScale so that they're both the same as we first start
+-- now they're not instance properties
+- update render method to use scales from state instead of from instance properties
+- using getDerivedStateFromProps 
+-- static lifecycle method that is called any time React renders our component for any reason
+-- be careful of what we're doing here cuz it can cause performance issues
+-- if you have a lot of calculations here, you can use memoization
+- another good rule of thumb is to use React.PureComponent instead of just React.Component
+-- reduces the amount of time getDerivedStateFromProps is called
+-- it is smarter about how often it calls your component lifecycles
