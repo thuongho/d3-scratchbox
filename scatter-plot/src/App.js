@@ -1,6 +1,7 @@
 import React from 'react';
 import * as d3 from 'd3';
 import Scatterplot from './Scatterplot';
+import Datapoint from './Datapoint';
 import './App.css';
 
 const data = d3.range(100).map((_) => [Math.random(), Math.random()]);
@@ -31,6 +32,9 @@ class App extends React.Component {
             height={height}
             width={width}
             data={data}
+            datapoint={({ x, y }) => (
+              <Datapoint key={`${x}-${y}`} x={x} y={y} />
+            )}
           />
           <Scatterplot
             x={50}
@@ -38,6 +42,9 @@ class App extends React.Component {
             height={height}
             width={width}
             data={data}
+            datapoint={({ x, y }) => (
+              <Datapoint key={`${x}-${y}`} x={x} y={y} r={10} />
+            )}
           />
         </svg>
       </div>

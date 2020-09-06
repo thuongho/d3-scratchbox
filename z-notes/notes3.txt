@@ -195,3 +195,51 @@ what's happening
 - another good rule of thumb is to use React.PureComponent instead of just React.Component
 -- reduces the amount of time getDerivedStateFromProps is called
 -- it is smarter about how often it calls your component lifecycles
+
+When props update
+- we use D3 objects to calc SVG properties so we have to make sure those objects update before we render
+- React 16 says to not use componentWillUpdate cuz it causes problem for modern async rendering
+-- anything that goes into componentWillUpdate goes to componentDidUpdate
+-- updating D3 objects in componentDidUpdate would mean our viz always renders one update behind
+- getDerivedStateFromProps to the rescue (3 step pattern)
+-- set up D3 objects in component state
+-- update D3 objects in getDerivedStateFromProps
+-- output SVG in render
+- getDerivedStateFromProps is discouraged but best tool we have to make sure D3 state is updated before we render
+-- it is called on every component render
+- avoid recalculating complex things too often
+-- use memoization helpers
+-- check for changes before updating
+
+
+Making your components more flexible with render props
+------------------------------------------------------
+Render props are a great technique for making components more flexible
+
+add datapoint
+- describe how x and y is rendered
+- function that takes in x and y and returns a Datapoint component
+
+Datapoint class
+return circle cx and cy and radius
+used Circle styled.circle
+fill: steelblue;
+fill-opacity: .7
+stroke: steelblue;
+stroke-width: 1.2px;
+
+since Scatterplot shares the same code as Datapoint, update data.map with datapoint
+
+pass in method that accepts props and creates new component with the props
+datapoint={(props) => <Datapoint {...props}} />
+- common pattern that wraps component in another function that accepts x and y coordinates
+- in Datapoint we can render any styling we want
+- we can add interactions to Datapoint and Scatterplot doesn't have to know anything about it
+
+Steps
+- pass in a render prop
+- use it to render datapoints
+- make datapoint component look nice
+
+Make scatterplot interactive
+- render circle radius from state and changing datapoint size

@@ -21,16 +21,12 @@ class Scatterplot extends PureComponent {
   }
 
   render() {
-    const { x, y, height, data } = this.props;
+    const { x, y, height, data, datapoint } = this.props;
     const { xScale, yScale } = this.state;
 
     return (
       <g transform={`translate(${x}, ${y})`}>
-        {data.map(([x, y]) => {
-          return (
-            <circle key={`${x}-${y}`} cx={xScale(x)} cy={yScale(y)} r='5' />
-          );
-        })}
+        {data.map(([x, y]) => datapoint({ x: xScale(x), y: yScale(y) }))}
         <Axis x={0} y={0} type='Left' scale={yScale} label='Y' />
         <Axis x={0} y={height} type='Bottom' scale={xScale} label='X' />
       </g>
