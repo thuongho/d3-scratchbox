@@ -243,3 +243,98 @@ Steps
 
 Make scatterplot interactive
 - render circle radius from state and changing datapoint size
+
+
+Super simplicity with React Hooks
+----------------------------------
+
+Hooks 
+- are backwards compatible
+useState 
+- managing state
+useEffect
+- side-effects
+- replaces componentDidMount, componentDidUpdate, shouldComponentUpdate, componentWillUnmount
+
+const myComponent = () => {
+  const [value, setValue] = useState('default');
+
+  const handleChange = (e) => setValue(e.target.value);
+  const saveValue = () => fetch('/my/endpoint', {
+    method: 'POST',
+    body: value
+  });
+
+  // runs on componentDidMount and componentDidUpdate
+  // [value] tells it to run only when value changes
+  useEffect(saveValue, [value]);
+  return <input value={value} onChange={handleChange} />
+}
+- second argument of useEffect acts as a shouldComponentUpdate
+
+// listening to mouse position looks like this
+const [mouseX, setMouseX] = useState();
+const handleMouse = (e) => setMouseX(e.screenX);
+
+useEffect(() => {
+  window.addEventListener('mousemove', handleMouse);
+  return () => window.removeEventListener(handleMouse);
+});
+
+// make button turn red after 10 clicks
+useEffect(() => {
+  if (clicks > 10) {
+    setColor('red');
+  }
+}, [clicks]);
+
+useContext
+- React's context API
+
+const SomeContext = React.createContext()
+<SomeContext.Consumer>
+  {state => ...}
+</SomeContext.Consumer>
+const state = useContext(SomeContext)
+- Context state becomes just a value in your function
+- React auto subscribes to all updates
+
+useD3 custom hook
+- combination of useRef and useEffect
+- hooks into component re-renders 
+- gives you control of anchor element
+- re-runs your D3 render function on every component render
+
+import { useD3 } from 'd3blackbox'
+function renderSomeD3(anchor) {
+  d3.select(anchor);
+}
+
+const MyD3Component = ({ x, y }) =>  {
+  const refAnchor = useD3((anchor) => renderSomeD3(anchor))
+  return <g ref={refAnchor} transform={`translate(${x}, ${y})`} />
+}
+
+useEffect
+- anything bound to component lifecycle
+- when a lot of logic build up, extract it to a custom hook
+
+useMemo (cache)
+- worried about performance or have a large dataset
+- it will only calc when something changes, otherwise it will save it to memory
+- it takes a function that generates a value and variables that that value depends on
+- it is like a combination of useEffect and useState
+
+lets say you have a d3 scale
+you feed the d3 generator function into the useMemo and say it depends on width and height
+- useMemo will auto regen scale everytime width and height changes
+- use in rendering approach
+everything we have in state, getDerivedStateFromProps now moves into hooks
+
+function myComponent({ data, width }) {
+  const scale = useMemo(() => {
+    d3.scaleLinear()
+      .domain([0, 1])
+      .range([0, width])
+  }, [width])
+}

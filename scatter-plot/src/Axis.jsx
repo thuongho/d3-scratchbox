@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 import styled from 'styled-components';
 
@@ -8,29 +8,18 @@ const Text = styled.text`
   font-size: 10px;
 `;
 
-class Axis extends React.Component {
-  constructor() {
-    super();
-    this.gRef = React.createRef();
-  }
+const Axis = ({ x, y, type, scale, label }) => {
+  const gRef = useRef();
 
-  componentDidMount() {
-    this.d3Render();
-  }
+  const d3Render = () => {
+    d3.select(gRef.current).call(d3[`axis${type}`](scale));
+  };
 
-  componentDidUpdate() {
-    this.d3Render();
-  }
+  useEffect(() => {
+    d3Render();
+  }, [scale, type]);
 
-  d3Render() {
-    const { type, scale } = this.props;
-
-    d3.select(this.gRef.current).call(d3[`axis${type}`](scale));
-  }
-
-  get labelPos() {
-    const { type, scale } = this.props;
-
+  const labelPos = () => {
     switch (type) {
       case 'Top':
         return { x: scale.range()[1] + 20, y: 0 };
@@ -43,17 +32,13 @@ class Axis extends React.Component {
       default:
         return;
     }
-  }
+  };
 
-  render() {
-    const { x, y, label } = this.props;
-
-    return (
-      <g ref={this.gRef} transform={`translate(${x}, ${y})`}>
-        <Text {...this.labelPos}>{label}</Text>
-      </g>
-    );
-  }
-}
+  return (
+    <g ref={gRef} transform={`translate(${x}, ${y})`}>
+      <Text {...labelPos()}>{label}</Text>
+    </g>
+  );
+};
 
 export default Axis;
