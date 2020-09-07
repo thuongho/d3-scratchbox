@@ -5,3 +5,53 @@ https://github.com/Swizec/h1b-software-salaries/tree/modern-code
 
 Show a Preloader
 ----------------
+
+import bootstrap css in index.js
+// src/index.js
+import React from "react"
+import ReactDOM from "react-dom"
+import App from "./App"
+// Insert the line(s) between here...
+import "bootstrap/dist/css/bootstrap.css"
+// ...and here.
+ReactDOM.render(<App />, document.getElementById('root'))
+
+Another benefit of Webpack
+- importing stylesheets turn into style tags with CSS in their body in runtime
+
+index.js
+- load App and React
+- load styles
+- Use ReactDOM to render <App /> into the DOM
+
+
+Load and Parse your data
+------------------------
+load data async using d3 csv parse script 
+
+App.js
+import d3, lodash (utility)
+loadAllData from DataHandling
+- keep code organize
+
+// defining whats in your component state in advance makes your code easier to read
+// people know what to expect
+useState
+- medianIncomes 
+- countyNames
+
+// useEffect to run when React first mounts the component
+loadAllData((data) => {
+  // get techSalaries, medianIncomes, countyNames
+  setTechsalaries
+  setMedianIncomes
+  setCountyNames
+})
+- when loadAllData runs, it will fetch data, parse data and update state
+- tie data loading to component mounts cuz it means you arent making requests you'll never use
+- use state setters in the cb
+- this updates Apps state and triggers a re-render -> updates our entire viz via props
+
+h1
+- Loaded {techSalaries.length} salaries
+- render this message to show our data finished loading
