@@ -33,6 +33,7 @@ App.js
 import d3, lodash (utility)
 loadAllData from DataHandling
 - keep code organize
+- we will create this file
 
 // defining whats in your component state in advance makes your code easier to read
 // people know what to expect
@@ -55,3 +56,22 @@ loadAllData((data) => {
 h1
 - Loaded {techSalaries.length} salaries
 - render this message to show our data finished loading
+
+D3 v5 
+- updated its data loading methods to use promises instead of callbacks
+d3.csv('filename').then(data => ...)
+- the promise resolves your data or throws an error
+
+loadAllData = async () => {
+  const datasets = await Promise.all([
+    d3.json('data/us.json'),
+    d3.csv('data/....csv', cleanCounty),
+    d3.csv('data/....csv', cleanIncome),
+    ...
+    d3.tsv('data/us-state-names.tsv', cleanUSStateName)
+  ])
+}
+- d3 fetches the data, then on the promise return, it accepts a callback
+- in this callback, well pass in our util method to clean up the data returned
+
+D3 supporsts formats like json, csv, tsv, text, and xml out of the box
