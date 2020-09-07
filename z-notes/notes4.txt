@@ -1,0 +1,100 @@
+A note about state and app structure
+====================================
+
+Handling state in your React app
+--------------------------------
+
+Best approach is to optimize for change
+- help prevent having to do rewrite
+
+basic architecture
+- unidirectional data flow
+- avoid using state management systems like redux
+
+single source of truth
+- data or state
+- flow down to the components
+- components will have callbacks to make changes
+
+app component
+- instead of data store
+- app will have a local state that provides data for entire application
+- data flows through props to pass into components
+- child components react to user events
+- components announce changes using callbacks to update state in app
+- changes flow back down the chain
+- UI updates through re-renders
+
+User clicks Toggle 
+-> invokes callbacks
+-> invokes callback on ControlRow
+-> invokes callback on Controls
+-> invokes a callback on App
+- callbacks evolve from passing low-level information to high-level business logic
+- components rely on props to render, React's engine can optimize these changes
+-- it compares new and old component trees and decide which components to re-render and which to leave alone
+
+functional programming concepts we're relying on are called:
+- referential transparency
+-- it can replace with its corresponding value without changing the program's behavior
+- idempotent functions
+-- operations called multiple times and never changing the result beyond the initial application
+- functional purity
+-- return value is the same as the same args
+-- evaluation has no side effects
+
+React Context, Redux 
+- decouple your business logic from your UI architecture
+
+
+How to structure your app
+--------------------------
+
+Rule of thumb
+deciding where one component ends and another begins
+- if you have to use the word "and" to describe what your component does, then 2 components
+- build the same feature multiple times, turn it into a component
+
+Tech salary viz
+App 
+- top level component
+- keeps everything together
+Title
+- renders the dynamic Title
+Description
+- renders the dynamic Description
+Histogram
+- renders the histogram and has child components for the axis and histogram bar
+- has potential to be used elsewhere
+CountyMap
+- renders the choropleth map and uses child components for the counties
+- has potential to be used elsewhere
+Controls
+- renders the rows of buttons that let users explore our dataset
+
+src/components/hasOwnFolders
+- Histogram
+- CountyMap
+- Controls
+- index.js to help with imports
+
+Meta folder
+- Title
+- Description
+- import { Title, Description } from './Meta'
+
+
+Install dependencies for React for Datavisualization
+----------------------------------------------------
+
+D3
+Topojson
+- parse geographical data
+Lodash
+- data manipulation easier
+Bootstrap
+- default styling
+String
+- string manipulation
+
+npm i d3 topojson lodash
