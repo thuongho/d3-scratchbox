@@ -79,7 +79,7 @@ function App() {
     <div className='App container'>
       <svg width='1100' height='500'>
         <CountyMap
-          usTopoJson={usTopoJSON}
+          usTopoJSON={usTopoJSON}
           USStateNames={USStateNames}
           values={countyValues}
           x={0}
