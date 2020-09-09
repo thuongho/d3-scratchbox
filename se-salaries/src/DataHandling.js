@@ -73,6 +73,26 @@ const cleanCounty = (d) => ({
 });
 
 /**
+ * Util method to map filtered incomes by the county id
+ * @function getMedianIncomesMap
+ * @param {Array} medianIncomes
+ * @param {Array} countyNames
+ * @returns {Object}
+ */
+const getMedianIncomesMap = (medianIncomes, countyNames) => {
+  const medianIncomesMap = {};
+  medianIncomes
+    // filter to discard any incoes whose countyName we can't find
+    .filter((d) => _.find(countyNames, { name: d['countyName'] }))
+    .forEach((d) => {
+      d['countyID'] = _.find(countyNames, { name: d['countyName'] }).id;
+      medianIncomesMap[d.countyID] = d;
+    });
+
+  return medianIncomesMap;
+};
+
+/**
  * Function to fetch all data using d3 and cleaning up the data
  * @function loadAllData
  * @param null
@@ -86,4 +106,22 @@ export const loadAllData = async () => {
     d3.csv('data/h1bs-2012-2016-shortened.csv', cleanSalary),
     d3.tsv('data/us-state-names.tsv', cleanUSStateName)
   ]);
+
+  // destructuring assignment
+  let [us, countyNames, medianIncomes, techSalaries, USStateNames] = datasets;
+  console.log('datasets', datasets);
+
+  // remove empty values where the cleanSalary returned null
+  techSalaries = techSalaries.filter((d) => !_.isNull(d));
+
+  // _.groupBy build dictionary maps
+  return {
+    usTopoJSON: us,
+    countyNames,
+    medianIncomes: getMedianIncomesMap(medianIncomes, countyNames),
+    medianIncomesByCounty: _.groupBy(medianIncomes, 'countyName'),
+    medianIncomesByUSState: _.groupBy(medianIncomes, 'USState'),
+    techSalaries,
+    USStateNames
+  };
 };

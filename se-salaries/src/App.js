@@ -12,11 +12,17 @@ function App() {
   const [countyNames, setCountyNames] = useState([]);
 
   const loadData = async () => {
-    const data = await loadAllData();
-    const { techSalaries, medianIncomes, countyNames } = data;
-    setTechSalaries(techSalaries);
-    setMedianIncomes(medianIncomes);
-    setCountyNames(countyNames);
+    try {
+      const data = await loadAllData();
+
+      const { techSalaries, medianIncomes, countyNames } = data;
+
+      setTechSalaries(techSalaries);
+      setMedianIncomes(medianIncomes);
+      setCountyNames(countyNames);
+    } catch (e) {
+      console.error('No data available.', e);
+    }
   };
 
   useEffect(() => {

@@ -32,7 +32,7 @@ load data async using d3 csv parse script
 App.js
 import d3, lodash (utility)
 loadAllData from DataHandling
-- keep code organize
+- keep code organize and clean
 - we will create this file
 
 // defining whats in your component state in advance makes your code easier to read
@@ -75,3 +75,27 @@ loadAllData = async () => {
 - in this callback, well pass in our util method to clean up the data returned
 
 D3 supporsts formats like json, csv, tsv, text, and xml out of the box
+
+tie the data together
+// DataHandling.js
+async load the data
+get the data
+1 prep the App
+- async loadData from DataHandling.js
+2 prep data parsing functions
+- data cleaning functions
+3 load the dataset
+- async loadAllData
+- pass in cleaning functions as callbacks
+4 tie all dataset together
+- use lodash to filter and group before returning a data as part of loadAllData
+
+_.groupBy build dictionary maps
+
+
+Render a choropleth map of the US
+---------------------------------
+
+cloropleth map shows different regions of the map with different colors
+color the median of household income with different shades of blue
+- the darker the blue, the higher the difference
