@@ -145,3 +145,50 @@ async function loadData() {
 - this renders the component once instead of 5 times in a row
 
 Step 3 CountyMap
+- create new component CountyMap
+- import d3, topojson, lodash
+
+projection = d3.geoAlbersUsa().scale(1280)
+- geoAlbersUsa renders USA
+- d3 offers many other projections
+https://github.com/d3/d3-geo#projections
+
+d3.geoPath().projection(projection)
+- path generator that takes geographical data, a projection and returns everything you need to draw a map
+- generator takes a projection and returns a function that generates the d attribute of <path> elements
+-- general way to specify SVG shapes
+
+d3.scaleQuantize
+- splits dataset into chunks based on input
+- easy way to have different layers of color
+- scaleQuantize is a D3 scale
+- this one splits a domain into 9 quantiles and assigns them specific values from the range
+-- lets say the domain goes from 0 to 90
+-- calling any number btw 0-9 would return 1
+-- any number btw 10-19 would return 2
+- use to pick colors from an array
+
+GeoJSON is geo data defined with JSON
+TopoJSON is a geographical data format based on JSON
+- topojson-client library translate geographical datasets into GeoJSON
+- TopoJSON produces smaller files
+- GeoJSON can be fed directly into D3's geo functions
+
+
+--- The magic sauce
+
+before we would use static getDerivedStateFromProps to render the projection
+- now we use useMemo
+
+projection
+- move projection to the center of the map
+- scaling it so that it looks ok on the map
+- something you experiment with and come up with your own scale as it is different for each use case
+
+if zoom and usTopoJson is available
+- zoom into a specific county
+- we'll make this available to the users later when we add interaction
+
+centroid
+- a function of d3 that lets you center a map on a specific county
+- when that happens, we also have to translate the map

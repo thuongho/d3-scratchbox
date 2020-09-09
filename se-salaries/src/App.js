@@ -13,7 +13,7 @@ function App() {
     medianIncomes: [],
     countyNames: [],
     usTopoJSON: null,
-    USStateNames
+    USStateNames: null
   });
   const {
     techSalaries,
