@@ -192,3 +192,34 @@ if zoom and usTopoJson is available
 centroid
 - a function of d3 that lets you center a map on a specific county
 - when that happens, we also have to translate the map
+
+
+-- rendering
+
+calc the mesh from topojson, the part that's being rendered
+- mesh renders the areas for the US
+- feature renders the lines
+
+use TopoJSON library to grab data out of usTopoJson dataset
+- mesh and feature are just what you get back, borders adn flat areas
+- mesh
+-- calcs a mesh for US States
+-- a thin line around the edges
+- feature
+-- calcs feature for each count
+-- fill in with color
+
+// build dictionary that maps county id to value
+const countyValueMap = _.fromPairs(values.map((d) => [d.countyID, d.value]));
+- optimize by building a map beforehand
+
+return
+- loops through list of counties and renders County component
+County component
+- gets a bunch of attributes and returns a <path>
+
+US state borders
+- render a single <path/> element and use geoPath to generate the d attribute
+
+
+-- step 4 County component
