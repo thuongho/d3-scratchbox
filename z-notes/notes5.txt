@@ -242,4 +242,29 @@ define county helper method component in countyMap
   - give path a title
 
 
--- 
+-- Optimize D3
+we can use useMemo and custom hooks to clean this up and make sure that d3 doesn't get rendered with every update
+
+const useQuantize = (values) => {
+  return useMemo(() => {
+    const scale = d3.scaleQuantize().range(d3.range(9))
+    if (values) {
+      // this is very slow part as we can be iterating over hundreds of thousands of data points
+      scale.domain([
+        d3.quantile(values, 0.15, (d) => d.value),
+        d3.quantile(values, 0.85, (d) => d.value)
+      ])
+    }
+    return scale;
+  }, [values]);
+}
+- useMemo and recalc scale only if values change otherwise always return regular scale
+
+const quantize = useQuantize(values)
+
+memoize
+- translation
+- projection
+
+useProjection
+- move projection and zoom into this custom hook

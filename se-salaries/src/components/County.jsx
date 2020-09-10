@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 
+// Shades of blue
 const ChoroplethColors = _.reverse([
   'rgb(247,251,255)',
   'rgb(222,235,247)',
