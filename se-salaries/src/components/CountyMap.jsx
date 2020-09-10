@@ -4,6 +4,8 @@ import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import _ from 'lodash';
 
+import County from './County';
+
 const CountyMap = ({
   usTopoJSON,
   USStateNames,

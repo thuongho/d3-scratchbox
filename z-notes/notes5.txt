@@ -223,3 +223,23 @@ US state borders
 
 
 -- step 4 County component
+define county helper method component in countyMap
+- built from 2 parts
+-- imports & color constants
+-- a component that returns a <path>
+
+// render uses quantize scale to pick right color
+  if (value) {
+    color = ChoroplethColors[quantize(value)];
+  }
+
+  // return path element
+  return (
+    <path d={geoPath(feature)} style={{ fill: color }} title={feature.id} />
+  )
+  - geoPath generates d attribute
+  - set fill style to color
+  - give path a title
+
+
+-- 
