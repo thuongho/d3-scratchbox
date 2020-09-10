@@ -451,3 +451,16 @@ D3's tickFormat
 - Linear scales turn 10000 to 10,000
 - tick formatters don't work well without a domain
 - dont need a range cuz we never use the scale itself
+
+--- The Render
+- mean 
+-- gets the mean of filteredSalaries based on base_salary
+-- runs it through the tick formatter
+
+
+--- Dynamic description
+Add imports in App
+Add component to App render
+Implement component in components/Meta
+Use getters for sentence fragments
+Play with conditionals to construct different sentences

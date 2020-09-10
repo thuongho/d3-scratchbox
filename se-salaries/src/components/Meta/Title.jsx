@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 // import only what we need from D3's packages
 import { scaleLinear } from 'd3-scale';
 import { mean as d3mean, extent as d3extent } from 'd3-array';
 
-import USStatesMap from '../utils/USStatesMap';
+import USStatesMap from '../../utils/USStatesMap';
 
 /**
  * Dynamic Title that returns 2 types of titles based on user selection
@@ -12,7 +12,7 @@ import USStatesMap from '../utils/USStatesMap';
  * Default
  * - {job title} paid ${mean}/year in {state} in {year}
  */
-export const Title = ({ filteredSalaries, filteredBy }) => {
+export const Title = ({ data, filteredBy }) => {
   /**
    * Describes the selected year
    * @function yearsFragment
@@ -70,14 +70,14 @@ export const Title = ({ filteredSalaries, filteredBy }) => {
    */
   const format = () => {
     return scaleLinear()
-      .domain(d3extent(filteredSalaries, (d) => d.base_salary))
+      .domain(d3extent(data, (d) => d.base_salary))
       .tickFormat();
   };
 
   /**
    * Returns a formatted mean of the filteredSalaries based on base_salary
    */
-  const mean = format()(d3mean(filteredSalaries, (d) => d.base_salary));
+  const mean = format()(d3mean(data, (d) => d.base_salary));
 
   /**
    * Returns a dynamic title base on the selected options

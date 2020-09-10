@@ -8,7 +8,7 @@ import { loadAllData } from './utils/DataHandling';
 import Preloader from './components/Preloader';
 import CountyMap from './components/CountyMap';
 import Histogram from './components/Histogram';
-import { Title } from './components/Meta';
+import { Title, Description } from './components/Meta';
 
 function App() {
   // define what's in component state in advance to set expectations
@@ -17,7 +17,9 @@ function App() {
     medianIncomes: [],
     countyNames: [],
     usTopoJSON: null,
-    USStateNames: null
+    USStateNames: null,
+    medianIncomesByUSState: {},
+    medianIncomesByCounty: {}
   });
 
   // Filtering support
@@ -33,7 +35,9 @@ function App() {
     medianIncomes,
     countyNames,
     usTopoJSON,
-    USStateNames
+    USStateNames,
+    medianIncomesByUSState,
+    medianIncomesByCounty
   } = datasets;
 
   const loadData = async () => {
@@ -90,7 +94,13 @@ function App() {
 
   return (
     <div className='App container'>
-      <Title filteredSalaries={filteredSalaries} filteredBy={filteredBy} />
+      <Title data={filteredSalaries} filteredBy={filteredBy} />
+      <Description
+        data={filteredSalaries}
+        allData={techSalaries}
+        filteredBy={filteredBy}
+        medianIncomesByCounty={medianIncomesByCounty}
+      />
       <svg width='1100' height='500'>
         <CountyMap
           usTopoJSON={usTopoJSON}
