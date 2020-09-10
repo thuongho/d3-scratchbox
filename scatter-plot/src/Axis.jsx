@@ -9,8 +9,16 @@ const Text = styled.text`
 `;
 
 const Axis = ({ x, y, type, scale, label }) => {
+  // Get reference to DOM so React can interact with it
   const gRef = useRef();
 
+  /**
+   * Render method that gets the referenced DOM and uses d3
+   * to render the updated axis position and scale (size)
+   * Use this method with React to update axis when component renders
+   * @function d3Render
+   * @returns null
+   */
   const d3Render = () => {
     d3.select(gRef.current).call(d3[`axis${type}`](scale));
   };
@@ -19,6 +27,11 @@ const Axis = ({ x, y, type, scale, label }) => {
     d3Render();
   }, [scale, type]);
 
+  /**
+   * Method that returns the x y coords depending on the type position
+   * @function labelPos
+   * @return {?Object}
+   */
   const labelPos = () => {
     switch (type) {
       case 'Top':

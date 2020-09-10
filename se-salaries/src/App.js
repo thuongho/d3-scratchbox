@@ -4,10 +4,11 @@ import _ from 'lodash';
 
 import './styles.css';
 
+import { loadAllData } from './utils/DataHandling';
 import Preloader from './components/Preloader';
-import { loadAllData } from './DataHandling';
 import CountyMap from './components/CountyMap';
 import Histogram from './components/Histogram';
+import { Title } from './components/Meta';
 
 function App() {
   // define what's in component state in advance to set expectations
@@ -18,6 +19,15 @@ function App() {
     usTopoJSON: null,
     USStateNames: null
   });
+
+  // Filtering support
+  const [filteredBy, setFilteredBy] = useState({
+    USState: '*',
+    year: '*',
+    jobTitle: '*'
+  });
+
+  // get states after data is loaded
   const {
     techSalaries,
     medianIncomes,
@@ -41,7 +51,7 @@ function App() {
    * @function countyValue
    * @param {Object} county
    * @param {Object} techSalariesMap
-   * @returns {Object}
+   * @returns {Object} - object with countyID and the diff in median vs household income
    */
   const countyValue = (county, techSalariesMap) => {
     // medianIncomes to get median household salary
@@ -80,7 +90,7 @@ function App() {
 
   return (
     <div className='App container'>
-      <h1>Loaded {techSalaries.length} salaries</h1>
+      <Title filteredSalaries={filteredSalaries} filteredBy={filteredBy} />
       <svg width='1100' height='500'>
         <CountyMap
           usTopoJSON={usTopoJSON}

@@ -390,3 +390,64 @@ const yScale = d3
 - write small components like this in the same file as their main component
 - they're not reusable since they fit a specific use-case
 - theyre small enough so your files don't get too crazy
+
+
+--- Step 5 Axis
+black box integration of Axis
+
+
+Make it understandable - meta info
+----------------------------------
+
+Dynamic title
+- what people are looking at
+description
+median line above the histogram
+
+--- Dynamic title
+import {Title} from Meta
+// support for filtering
+add filteredBy state
+- show all USState, year, jobTitle
+
+use these as props to insert into Title
+
+set up App component for future user-controlled data filtering
+- filteredBy
+-- tells us what users are filtering by 
+3 options
+- USState, year, jobTitle
+
+USStateMap
+- dictionary that translate US state codes to full names
+
+
+--- Building Title
+yearsFragment
+- get the year and return string of year
+
+USStateFragment
+- get the state adn return state from state map
+
+import { scaleLinear } from 'd3-scale'
+import { mean as d3mean, extent as d3extent } from 'd3-array'
+- mean is the avg
+- extent gives the full array from min to the biggest number
+
+format function
+creates a new linear scale that takes in the extent of the data base on the base_salary
+return a tick formatter
+- HOF cuz it returns a function
+- tickFormat()
+-- we put in a number and it will pretty print that number for us or format for us
+
+jobTitleFragment
+- job title string description of what we are looking at
+
+render
+- start with the average and format based on salary
+
+D3's tickFormat
+- Linear scales turn 10000 to 10,000
+- tick formatters don't work well without a domain
+- dont need a range cuz we never use the scale itself
