@@ -2,6 +2,7 @@ import React from 'react';
 import * as d3 from 'd3';
 
 import HistogramBar from './HistogramBar';
+import Axis from './Axis';
 
 const Histogram = ({
   bins,
@@ -58,6 +59,7 @@ const Histogram = ({
           />
         ))}
       </g>
+      <Axis x={axisMargin - 3} y={0} type='Left' scale={yScale} />
     </g>
   );
 };
