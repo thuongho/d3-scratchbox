@@ -316,3 +316,70 @@ Use 2 components
 -- translating raw data into a histogram
 - histogramBar
 -- draws a single bar and labels it
+
+--- Rendering the histogram
+- get the histogram
+- get the bars 
+-- get histogram data
+- get count
+-- counting the bars
+- width scale
+-- determined by the bottom and the top counts 
+- y scale
+-- goes from 0 to the maximum of the values in the bars
+-- bars has all of the dataset, we can use d3.max to get the maximum of all the bars
+
+bars 
+- dataset of all the histogram
+
+histogram adjusts its width according to the size of the data (bins)
+
+return grouping <g> element
+add className histogram
+move it by using transform
+group <g> all the bars
+- map through the bars and return HistogramBar
+<HistogramBar 
+  percent={(bar.length / data.length) * 100} 
+  x={axisMargin}
+  y={yScale(bar.x1)}
+  width={widthScale(bar.length)}
+  height={yScale(bar.x0) - yScale(bar.x1)}
+  key=`{histogram-bar-${bar.x0}`} />
+- use x in yScale cuz the histogram is horizontal
+
+HistogramBar
+- we will define
+
+// histogram generator
+const histogram = d3
+  .histogram()
+  // thresholds specifies how many bins we want
+  .thresholds(bins)
+  // value specifies the value accessor function
+  .value(value); // in this case it returns base_salary
+
+print histogram
+- array structure where each entry holds metadata about the bin and values it contains
+
+// horizontal scale
+const widthScale = d3
+  .scaleLinear()
+  // map min and max of count to range
+  .domain([d3.min(counts), d3.max(counts)])
+  .range([0, width - axisMargin]);
+- has a range from smallest min bin to the largest 
+- range of 0 to width less a margin
+- use to calculate bar size
+
+// vertical scale
+const yScale = d3
+  .scaleLinear()
+  // get the max of all the bars x coord cuz horizontal chart
+  // map 0 and max to range
+  .domain([0, d3.max(bars, (b) => d.x1)])
+  .range([height - y - bottomMargin, 0]);
+- range from 0 to largest x1 coordinate we can find in a bin
+- bins go from x0 to x1
+- most histograms are horizontally oriented
+- ours is vertical so labels are easier to read
