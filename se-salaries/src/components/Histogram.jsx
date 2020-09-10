@@ -1,6 +1,8 @@
 import React from 'react';
 import * as d3 from 'd3';
 
+import HistogramBar from './HistogramBar';
+
 const Histogram = ({
   bins,
   width,
@@ -43,17 +45,19 @@ const Histogram = ({
     .range([height - y - bottomMargin, 0]);
 
   return (
-    <g className='bars'>
-      {bars.map((bar) => (
-        <HistogramBar
-          percent={(bar.length / data.length) * 100}
-          x={axisMargin}
-          y={yScale(bar.x1)}
-          width={widthScale(bar.length)}
-          height={yScale(bar.x0) - yScale(bar.x1)}
-          key={`histogram-bar-${bar.x0}`}
-        />
-      ))}
+    <g className='histogram' transform={`translate(${x}, ${y})`}>
+      <g className='bars'>
+        {bars.map((bar) => (
+          <HistogramBar
+            percent={(bar.length / data.length) * 100}
+            x={axisMargin}
+            y={yScale(bar.x1)}
+            width={widthScale(bar.length)}
+            height={yScale(bar.x0) - yScale(bar.x1)}
+            key={`histogram-bar-${bar.x0}`}
+          />
+        ))}
+      </g>
     </g>
   );
 };

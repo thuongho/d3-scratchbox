@@ -96,8 +96,8 @@ function App() {
           bins={10}
           width={500}
           height={500}
-          x='500'
-          y='10'
+          x={500}
+          y={10}
           data={filteredSalaries}
           axisMargin={83}
           bottomMargin={5}

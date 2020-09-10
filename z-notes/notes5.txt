@@ -383,3 +383,10 @@ const yScale = d3
 - bins go from x0 to x1
 - most histograms are horizontally oriented
 - ours is vertical so labels are easier to read
+
+
+--- Step 4 HistogramBar (sub)component
+- put everything that is not used by anything else in the same file
+- write small components like this in the same file as their main component
+- they're not reusable since they fit a specific use-case
+- theyre small enough so your files don't get too crazy
