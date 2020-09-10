@@ -268,3 +268,51 @@ memoize
 
 useProjection
 - move projection and zoom into this custom hook
+
+
+Render Histogram of salaries
+----------------------------
+
+histogram 
+- make histogram component
+- add Axis using blackbox approach
+- add some styling
+
+--- Step 1 prep app.js
+import Histogram that we haven't created yet
+add Histogram component in svg
+- add bins how many bars we want
+- data={filteredSalaries}
+- value={(d) => d.base_salary}
+-- dynamic
+-- value exisor on how to get the value from the dataset
+
+
+--- Step 2 Css changes
+style svg with css
+
+for now use global stylesheet
+
+
+--- Step 3 Histogram component
+Histogram component
+- destructure the props
+
+histogram = d3.histogram()
+- histogram generator
+- take some data and histogram it for you
+widthScale = d3.scaleLinear()
+yScale = d3.scaleLinear()
+- scales for the vertical and horizontal
+
+Full-feature integration approach
+- React talks to the DOM
+- D3 calc the props
+
+Use 2 components
+- histogram
+-- makes the general layout
+-- dealing with D3
+-- translating raw data into a histogram
+- histogramBar
+-- draws a single bar and labels it
