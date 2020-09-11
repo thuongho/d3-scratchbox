@@ -499,3 +499,78 @@ move the line to the yScale
 add a label
 render the component
 move medianHousehold after data is load
+
+css
+stroke-dasharray: 3
+- 3px dash follow by 3px blank
+other styles
+- https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray
+
+
+
+Add user controls for data slicing and dicing
+=============================================
+
+filters for users to interact with viz
+- 2 years
+- 12 job titles
+- 50 states
+
+click a button updates a filter function
+-> communicates all the way up the App component
+-> App updates the filteredSalaries
+-> this triggers re-render and updates data viz
+
+build controls in 4 steps top to bottom
+1 update App with filtering and a <Controls> render
+2 Build Controls component
+- builds the filter based on inputs
+3 Build ControlRow component
+- handles a row of buttons
+4 Build Toggle component
+- a button
+
+--- Update App
+import Controls
+const [salariesFilter, setSalariesFilter] = useState(() => true)
+- add salariesFilter with state cb true
+updateDataFilter
+- updates the filter states
+update filteredSalaries = techSalaries.filter(salariesFilter)
+- it will filter everything by default
+
+if (filteredBy.USState !== '*')
+zoom = filteredBy.USState
+medianHousehold = d3.mean(
+  medianIncomesByUSState[zoom],
+  (d) => d.medianIncomes
+)
+- get the mean income of the zoom state
+
+add a white rectangle underneath histogram that matches x, y width and height
+
+render controls after </svg> because it's not a SVG component
+- just a normal HTML
+- use updateDataFilter prop to say which callback it should call when a new filter is ready
+
+
+--- Step 2 Build controls component
+-yearFilter
+
+--- Filter Logic
+setFilteredBy((filteredBy) => {
+  return {...filteredBy, year };
+});
+- updated the year and also update a bunch of things
+setFilter((filter) => {
+  return {...filterFunctions, year: yearFilter };
+});
+
+reportUpdateUpTheChain
+- calls the update method in the prop to tell app to rerender
+
+ControlRow
+- give it data
+- set of toggleNames
+- callback to update the filter
+- which entry is picked right now

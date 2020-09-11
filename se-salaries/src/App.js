@@ -10,6 +10,7 @@ import CountyMap from './components/CountyMap';
 import Histogram from './components/Histogram';
 import { Title, Description } from './components/Meta';
 import MedianLine from './components/MedianLine';
+import Controls from './components/Controls';
 
 function App() {
   // define what's in component state in advance to set expectations
@@ -24,6 +25,7 @@ function App() {
   });
 
   // Filtering support
+  const [salariesFilter, setSalariesFilter] = useState(() => () => true);
   const [filteredBy, setFilteredBy] = useState({
     USState: '*',
     year: '*',
@@ -74,6 +76,20 @@ function App() {
     };
   };
 
+  /**
+   * Method to pass the filter function and filteredBy dictionary
+   * from arguments to App state by updating the state
+   * Use as callbacks in Controls
+   * @function updateDataFilter
+   * @param {Object} filter - state salariesFilter
+   * @param {Object} filteredBy - state filteredBy
+   * @returns null
+   */
+  const updateDataFilter = (filter, filteredBy) => {
+    setFilteredBy(filteredBy);
+    setSalariesFilter(filter);
+  };
+
   useEffect(() => {
     // when component mounts, it will fetch data and we set the state to have it rerender
     loadData();
@@ -85,14 +101,29 @@ function App() {
     return <Preloader />;
   }
 
-  const filteredSalaries = techSalaries,
+  /**
+   * Data filtered by filter controls
+   */
+  const filteredSalaries = techSalaries.filter(salariesFilter),
     filteredSalariesMap = _.groupBy(filteredSalaries, 'countyID'),
     countyValues = countyNames
       .map((county) => countyValue(county, filteredSalariesMap))
       .filter((d) => !_.isNull(d));
 
+  /**
+   * @type {?String} zoom - US State selected
+   * @type {Number} medianHousehold - median income of US
+   */
   let zoom = null,
     medianHousehold = medianIncomesByUSState['US'][0].medianIncome;
+
+  if (filteredBy.USState !== '*') {
+    zoom = filteredBy.USState;
+    medianHousehold = d3.mean(
+      medianIncomesByUSState[zoom],
+      (d) => d.medianIncome
+    );
+  }
 
   return (
     <div className='App container'>
@@ -113,6 +144,14 @@ function App() {
           width={500}
           height={500}
           zoom={zoom}
+        />
+        // Opaque white background for Histogram to fix zoom
+        <rect
+          width={500}
+          height={500}
+          x={500}
+          y={10}
+          style={{ fill: 'white' }}
         />
         <Histogram
           bins={10}
@@ -136,6 +175,7 @@ function App() {
           value={(d) => d.base_salary}
         />
       </svg>
+      <Controls data={techSalaries} updateDataFilter={updateDataFilter} />
     </div>
   );
 }
