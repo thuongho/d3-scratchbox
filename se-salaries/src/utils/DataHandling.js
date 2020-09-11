@@ -120,7 +120,7 @@ export const loadAllData = async () => {
     countyNames,
     medianIncomes: getMedianIncomesMap(medianIncomes, countyNames),
     medianIncomesByCounty: _.groupBy(medianIncomes, 'countyName'),
-    medianIncomesByUSState: _.groupBy(medianIncomes, 'USState'),
+    medianIncomesByUSState: _.groupBy(medianIncomes, 'USstate'),
     techSalaries,
     USStateNames
   };

@@ -464,3 +464,38 @@ Add component to App render
 Implement component in components/Meta
 Use getters for sentence fragments
 Play with conditionals to construct different sentences
+
+
+Overlay a median household line
+median dotted line
+- shows direct comparison btw the histogram's distribution and the median household income in an area
+
+--- Step 1 App
+import MedianLine component
+MedianLine comes after the Histogram so that it overlays it
+value accessor for dynamic reading of the dataset
+
+medianIncomesByUSState groups salary data by US state
+
+MedianLine
+- give it sizing and positioning props
+- dataset
+- value accessor
+- median value to show
+-- this way it doesn't have to calc the median
+
+--- Step 2 MedianLine
+linearScale for the vertical positioning
+line = d3.line()
+- line generator
+- helps us create a straight line
+- builds the d attribute for the path
+- comes from the d3-shape package
+- generates splines or polylines
+- by default it takes an array of points and builds a line through them all
+- span the entire width and leave 5px for the label
+get the median or calc median ourselves
+move the line to the yScale
+add a label
+render the component
+move medianHousehold after data is load

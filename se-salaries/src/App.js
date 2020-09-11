@@ -9,6 +9,7 @@ import Preloader from './components/Preloader';
 import CountyMap from './components/CountyMap';
 import Histogram from './components/Histogram';
 import { Title, Description } from './components/Meta';
+import MedianLine from './components/MedianLine';
 
 function App() {
   // define what's in component state in advance to set expectations
@@ -90,7 +91,8 @@ function App() {
       .map((county) => countyValue(county, filteredSalariesMap))
       .filter((d) => !_.isNull(d));
 
-  let zoom = null;
+  let zoom = null,
+    medianHousehold = medianIncomesByUSState['US'][0].medianIncome;
 
   return (
     <div className='App container'>
@@ -121,6 +123,16 @@ function App() {
           data={filteredSalaries}
           axisMargin={83}
           bottomMargin={5}
+          value={(d) => d.base_salary}
+        />
+        <MedianLine
+          data={filteredSalaries}
+          x={500}
+          y={10}
+          width={600}
+          height={500}
+          bottomMargin={5}
+          median={medianHousehold}
           value={(d) => d.base_salary}
         />
       </svg>

@@ -22,7 +22,7 @@ button {
   fill: grey;
 }
 
-/* mean line a dotted grey */
+/* mean line a dotted grey line 3px dash 3px blank */
 .mean path {
   stroke-dasharray: 3;
   stroke: grey;
