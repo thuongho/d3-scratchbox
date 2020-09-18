@@ -24,9 +24,11 @@ const Histogram = ({
     .value(value); // in this case it returns base_salary
 
   // feed data into histogram generator
-  const bars = histogram(data),
-    // count how many values in each bin to configure scales
-    counts = bars.map((d) => d.length);
+  const bars = histogram(data);
+  console.log('bars', bars);
+  // count how many values in each bin to configure scales
+  const counts = bars.map((d) => d.length);
+  console.log('counts', counts);
 
   // horizontal scale used to calculate bar sizes
   const widthScale = d3

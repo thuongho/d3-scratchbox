@@ -47,6 +47,7 @@ function App() {
     try {
       const datasets = await loadAllData();
       setDatasets(datasets);
+      console.log('datasets', datasets);
     } catch (e) {
       console.error('No data available.', e);
     }

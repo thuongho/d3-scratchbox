@@ -570,7 +570,17 @@ reportUpdateUpTheChain
 - calls the update method in the prop to tell app to rerender
 
 ControlRow
-- give it data
-- set of toggleNames
-- callback to update the filter
-- which entry is picked right now
+- data: 
+-- give it data
+- toggleNames
+-- set of toggleNames
+- updateDataFilter
+-- callback to update the filter
+- picked
+-- which entry is picked right now
+
+Step 3 Build ControlRow component
+
+
+Step 5 Add US state and Job Title filters
+add USState and jobTitle

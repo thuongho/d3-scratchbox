@@ -9,7 +9,7 @@ import _ from 'lodash';
  */
 const cleanIncome = (d) => ({
   countyName: d['Name'],
-  USstate: d['State'],
+  USState: d['State'],
   medianIncome: Number(d['Median Household Income']),
   lowerBound: Number(d['90% CI Lower Bound']),
   upperBound: Number(d['90% CI Upper Bound'])
@@ -18,13 +18,14 @@ const cleanIncome = (d) => ({
 /**
  * d3 method to parse date in the format mm/dd/YYYY
  * @function dateParse
- * @param null
+ * @param {Date} date
  * @returns date string in the format mm/dd/YYYY
  */
 const dateParse = d3.timeParse('%m/%d/%Y');
 
 /**
- * Util method to clean salary data
+ * Util method to clean salary data.
+ * Omit data with no salary or if the salary is more than 300k
  * @function cleanSalary
  * @param {Object} d - Data object
  * @returns {Object} - Formatted salary data object
@@ -43,7 +44,7 @@ const cleanSalary = (d) => {
     clean_job_title: d['job title'],
     base_salary: Number(d['base salary']),
     city: d['city'],
-    USstate: d['state'],
+    USState: d['state'],
     county: d['county'],
     countyID: d['countyID']
   };
@@ -53,7 +54,7 @@ const cleanSalary = (d) => {
  * Util method to clean US State names
  * @function cleanUSStateName
  * @param {Object} d - Data object
- * @returns {Object} - Formatted state name object
+ * @returns {{code, id, name}} - Formatted state name object
  */
 const cleanUSStateName = (d) => ({
   code: d.code,
@@ -82,7 +83,7 @@ const cleanCounty = (d) => ({
 const getMedianIncomesMap = (medianIncomes, countyNames) => {
   const medianIncomesMap = {};
   medianIncomes
-    // filter to discard any incoes whose countyName we can't find
+    // filter to discard any incomes whose countyName we can't find
     .filter((d) => _.find(countyNames, { name: d['countyName'] }))
     .forEach((d) => {
       d['countyID'] = _.find(countyNames, { name: d['countyName'] }).id;
@@ -120,7 +121,7 @@ export const loadAllData = async () => {
     countyNames,
     medianIncomes: getMedianIncomesMap(medianIncomes, countyNames),
     medianIncomesByCounty: _.groupBy(medianIncomes, 'countyName'),
-    medianIncomesByUSState: _.groupBy(medianIncomes, 'USstate'),
+    medianIncomesByUSState: _.groupBy(medianIncomes, 'USState'),
     techSalaries,
     USStateNames
   };

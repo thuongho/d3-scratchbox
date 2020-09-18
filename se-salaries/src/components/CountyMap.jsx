@@ -40,6 +40,8 @@ const CountyMap = ({
 
   // optimize by building a map beforehand
   const countyValueMap = _.fromPairs(values.map((d) => [d.countyID, d.value]));
+  console.log('values', values);
+  console.log('countyValueMap', countyValueMap);
 
   return (
     <g>
