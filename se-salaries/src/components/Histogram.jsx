@@ -25,10 +25,10 @@ const Histogram = ({
 
   // feed data into histogram generator
   const bars = histogram(data);
-  console.log('bars', bars);
+  // console.log('bars', bars);
   // count how many values in each bin to configure scales
   const counts = bars.map((d) => d.length);
-  console.log('counts', counts);
+  // console.log('counts', counts);
 
   // horizontal scale used to calculate bar sizes
   const widthScale = d3

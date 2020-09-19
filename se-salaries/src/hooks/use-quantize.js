@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import * as d3 from 'd3';
 
-const useQuantize = ({ values }) => {
+const useQuantize = (values) => {
   return useMemo(() => {
     // scaleQuantize is a D3 scale
     // this one splits a domain into 9 quantiles and assigns them specific values from the range

@@ -1,7 +1,7 @@
 import React from 'react';
 import * as d3 from 'd3';
 // Topojson-client translate geo datasets into GeoJSON
-import * as topojson from 'topojson-client';
+import * as topojson from 'topojson';
 import _ from 'lodash';
 import useProjection from '../hooks/use-projection';
 import useQuantize from '../hooks/use-quantize';
@@ -27,7 +27,7 @@ const CountyMap = ({
     USStateNames
   });
   // use quantize to pick color from a choropleth colors array
-  const quantize = useQuantize({ values });
+  const quantize = useQuantize(values);
 
   // TopoJSON is a geographical data format based on JSON
   if (!usTopoJSON) return null;
@@ -40,8 +40,6 @@ const CountyMap = ({
 
   // optimize by building a map beforehand
   const countyValueMap = _.fromPairs(values.map((d) => [d.countyID, d.value]));
-  console.log('values', values);
-  console.log('countyValueMap', countyValueMap);
 
   return (
     <g>

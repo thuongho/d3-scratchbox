@@ -20,8 +20,6 @@ const ControlRow = ({ data, toggleNames, picked, updateDataFilter }) => {
    * @param {*} newState
    */
   const makePick = (picked, newState) => {
-    console.log('newState', newState);
-    console.log('picked', picked);
     updateDataFilter(picked, !newState);
   };
   let capitalize;

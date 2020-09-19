@@ -5,7 +5,7 @@ const Toggle = ({ label, name, value, onClick }) => {
 
   // Make active
   if (value) {
-    className += 'btn-primary';
+    className += ' btn-primary';
   }
 
   return (

@@ -47,7 +47,7 @@ function App() {
     try {
       const datasets = await loadAllData();
       setDatasets(datasets);
-      console.log('datasets', datasets);
+      // console.log('datasets', datasets);
     } catch (e) {
       console.error('No data available.', e);
     }
@@ -88,19 +88,13 @@ function App() {
    */
   const updateDataFilter = (filter, filteredBy) => {
     setFilteredBy(filteredBy);
-    setSalariesFilter(filter);
+    setSalariesFilter(() => filter);
   };
 
   useEffect(() => {
     // when component mounts, it will fetch data and we set the state to have it rerender
     loadData();
   }, []);
-
-  // Render
-
-  if (techSalaries.length < 1) {
-    return <Preloader />;
-  }
 
   /**
    * Data filtered by filter controls
@@ -110,6 +104,12 @@ function App() {
     countyValues = countyNames
       .map((county) => countyValue(county, filteredSalariesMap))
       .filter((d) => !_.isNull(d));
+
+  // Render
+
+  if (filteredSalaries.length < 1) {
+    return <Preloader />;
+  }
 
   /**
    * @type {?String} zoom - US State selected

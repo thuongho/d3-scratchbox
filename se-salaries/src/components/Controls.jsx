@@ -42,7 +42,6 @@ const Controls = ({ data, updateDataFilter }) => {
      * @param {Object} d - dictionary of filters
      * @returns {Function} year, USState, jobTitle filter functions
      */
-    console.log('filterFunctions', filterFunctions);
     const filter = (d) =>
       filterFunctions.year(d) &&
       filterFunctions.USState(d) &&
@@ -59,7 +58,6 @@ const Controls = ({ data, updateDataFilter }) => {
    * @param {Function} reset - reset the filter back to defaults
    */
   const updateYearFilter = (year, reset) => {
-    console.log('year', year);
     /**
      * A function that checks if the data matches the selected year
      * @function yearFilter
@@ -83,7 +81,6 @@ const Controls = ({ data, updateDataFilter }) => {
       return { ...filteredBy, year };
     });
     setFilter((filterFunctions) => {
-      console.log('yearFilter', yearFilter);
       return { ...filterFunctions, year: yearFilter };
     });
   };
@@ -123,7 +120,7 @@ const Controls = ({ data, updateDataFilter }) => {
      * @param {Object} d - data object
      * @return {Boolean} match - return true for elements to keep and false for discarded
      */
-    let USStateFilter = (d) => d.clean_job_title === USState;
+    let USStateFilter = (d) => d.USState === USState;
 
     /**
      * Reset to defaults
@@ -146,7 +143,7 @@ const Controls = ({ data, updateDataFilter }) => {
 
   useEffect(() => {
     // Trigger the updatedDataFilter callback to update the App
-    // reportUpdateUpTheChain();
+    reportUpdateUpTheChain();
   }, [filteredBy, filterFunctions]);
 
   /**

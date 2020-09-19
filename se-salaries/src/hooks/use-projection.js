@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import * as d3 from 'd3';
 import _ from 'lodash';
-import * as topojson from 'topojson-client';
+import * as topojson from 'topojson';
 
 const useProjection = ({ width, height, zoom, usTopoJSON, USStateNames }) => {
   return useMemo(() => {
@@ -21,7 +21,7 @@ const useProjection = ({ width, height, zoom, usTopoJSON, USStateNames }) => {
     if (zoom && usTopoJSON) {
       const us = usTopoJSON,
         // get list of all US state features in geo data (flats - geo space)
-        USStatePaths = topojson.feature(us, us.objects.states).feautures,
+        USStatePaths = topojson.feature(us, us.objects.states).features,
         // find the one we're zooming on and get the id
         id = _.find(USStateNames, { code: zoom }).id;
 

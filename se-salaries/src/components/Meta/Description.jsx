@@ -178,7 +178,7 @@ export const Description = ({
 
     // top county & median
     let best = ordered[ordered.length - 1],
-      countyMedian = medians[best[0].countyID][0].medianIncome;
+      countyMedian = medians[best[0]?.countyID][0]?.medianIncome;
 
     // best city
     const byCity = _.groupBy(best, 'city');
