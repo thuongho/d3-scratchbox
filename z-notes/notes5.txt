@@ -591,3 +591,68 @@ REal World
 
 Controls
 add useEffect to add routing
+useEffect in controls to read the URL when controls first loads
+
+
+--- Twitter and Facebook cards and SEO
+- can use react helmet
+- going to keep it simple and keep it into the index.html
+- add title
+- add some text to load in case the content doesn't load fast enough
+- add some meta
+
+how visualizations look on social media matters and it is easy to set up
+public/index.html
+- title
+- twitter cards
+- facebook open graph 
+
+<link rel="canonical" href="..." />
+- tells the search engine that a specific URL represents the master copy of a page
+- prevents duplicate issues
+- tells the original source and improves SEO
+- important for when people copy and paste your content and put it on other websites
+
+add some default text before the preloader is loaded
+As soon as React loads, these get overwritten with our preloader, but it's good to have them here for any search engines that aren't running JavaScript yet. I think both Google and Bing are capable of running our React app and getting text from there, but you never know.
+
+make social media embeds look great
+- use twitter card
+- facebook opengraph
+
+<head>
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title"
+          content="The average H1B in tech pays $86,164/year" />
+    <meta property="og:description"
+          content="Since 2012 the US tech industry has sponsored
+176,075 H1B work visas. With an average individual salary
+up to $39,465 above median household income." />
+    <meta property="og:url"
+          content="https://swizec.github.io/react-d3-walkthrough-livecode" />
+    <meta property="og:site_name" content="A geek with a hat" />
+    <meta property="article:publisher"
+          content="https://facebook.com/swizecpage" />
+    <meta property="fb:admins" content="624156314" />
+    <meta property="og:image"
+          content="https://swizec.github.io/react-d3js-step-by-step/thumbnail.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:description"
+          content="Since 2012 the US tech industry has sponsored
+176,075 H1B work visas. With an average individual salary
+up to $39,465 above median household income." />
+    <meta name="twitter:title"
+          content="The average H1B in tech pays $86,164/year" />
+    <meta name="twitter:site" content="@swizec" />
+    <meta name="twitter:image"
+          content="https://swizec.github.io/react-d3js-step-by-step/thumbnail.png" />
+    <meta name="twitter:creator" content="@swizec" />
+</head>
+
+make sure to change og:url, og:site_name, article:publisher, fb:admins, og:image, twitter:site, twitter:image, and twitter:creator
+- An important one is fb:admin. 
+-- It enables admin features on your site if you add their social plugins
+
+npm i now -g
+now
