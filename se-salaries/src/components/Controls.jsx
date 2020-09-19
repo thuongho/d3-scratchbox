@@ -6,6 +6,15 @@ import ControlRow from './ControlRow';
  * Builds filter function and filteredBy dictionary based on user choices
  */
 const Controls = ({ data, updateDataFilter }) => {
+  const getStatesFromHash = () => {
+    const [year, jobTitle, USState] = window.location.hash
+      .replace('#', '')
+      .split('-');
+    return { year, jobTitle, USState };
+  };
+
+  let { year, jobTitle, USState } = getStatesFromHash();
+
   /**
    * States
    * ----------
@@ -13,10 +22,11 @@ const Controls = ({ data, updateDataFilter }) => {
    * filter callback returns always true
    */
   const [filteredBy, setFilteredBy] = useState({
-    year: '*',
-    jobTitle: '*',
-    USState: '*'
+    year: year || '*',
+    jobTitle: jobTitle || '*',
+    USState: USState || '*'
   });
+
   const [filterFunctions, setFilter] = useState({
     year: () => true,
     jobTitle: () => true,
@@ -145,6 +155,21 @@ const Controls = ({ data, updateDataFilter }) => {
     // Trigger the updatedDataFilter callback to update the App
     reportUpdateUpTheChain();
   }, [filteredBy, filterFunctions]);
+
+  useEffect(() => {
+    // On navigate to a new page with states in param
+    let { year, jobTitle, USState } = getStatesFromHash();
+
+    if (year !== '*' && year) {
+      updateYearFilter(year);
+    }
+    if (jobTitle !== '*' && jobTitle) {
+      updateJobTitleFilter(jobTitle);
+    }
+    if (USState !== '*' && USState) {
+      updateUSStateFilter(USState);
+    }
+  }, []);
 
   /**
    * Build a Set of distinct arrays from the dataset
