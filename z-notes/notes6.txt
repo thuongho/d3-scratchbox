@@ -81,3 +81,52 @@ physics
 - invert velocity when ground is reached
 - add velocity to position
 - add gravity to velocity
+
+
+
+Use transitions for simple animation
+------------------------------------
+
+--- d3 animations with transitions
+- you define start and stop and d3 does the rest
+- give dom to d3 to do animations once it is done it gives it back to React
+
+game loops are great for fine grained control
+transition shines
+- when all you need is a little flourish on user action
+
+
+Build a swipe transition
+------------------------
+goal
+build a component that handles transition internally and behaves like other React components externally
+
+--- swipe video
+
+save incoming prop into a state
+- this triggers a render
+- using state to render component
+-- future prop changes won't render the component
+-- this let's us run transitions
+
+x prop changes
+- useEffect runs and starts d3 transition
+- blackbox rendering approach
+-- d3 selects DOM node and takes over
+
+d3 transition handles 
+- animation
+- manipulates DOM directly
+- takes care of timing
+- takes care of easing function
+
+when transition ends, we update React state so React knows what's up
+component re-renders again
+
+--- solution
+you can chain transitions
+- it will happen sequentially and not in parallel
+el.transition()
+.duration(..)
+.ease(d3....)
+.transition()

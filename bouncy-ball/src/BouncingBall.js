@@ -15,7 +15,9 @@ const BouncingBall = ({ max_h }) => {
     setBall((ball) => {
       let { y, vy } = ball;
 
-      if (y > max_h) vy = -vy;
+      if (y > max_h) {
+        vy = -vy;
+      }
 
       return {
         y: y + vy,
