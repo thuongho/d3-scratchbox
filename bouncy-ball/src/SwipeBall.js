@@ -9,13 +9,13 @@ const SwipeBall = ({ x, y }) => {
   useEffect(() => {
     let el = d3.select(circleRef.current);
     // name the transition
+    // this makes the transition run parallel
     el.transition('box-x')
       .duration(600)
       .ease(d3.easeBounceOut)
       .attr('cx', x)
       .on('end', () => setRealX(x));
 
-    // this makes the transition run parallel
     el.transition('box-y')
       .ease(d3.easeCubicInOut)
       .attr('cy', y)

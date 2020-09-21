@@ -130,3 +130,41 @@ el.transition()
 .duration(..)
 .ease(d3....)
 .transition()
+
+
+Powerful animation with transitions and game loops combined
+------------------------------------------------------------
+
+donut to bar
+1 A <Donut> component renders a bunch of <Arc>s
+2 Each <Arc> takes care of its complex shape
+...
+
+
+--- Understanding custom tweens
+- interpolator
+-- calculates how to transition from point a to point b
+-- has a param t
+if you want to go from 10 to 20
+inter(0.0) // 10
+inter(0.5) // 15
+inter(1.0) // 20
+
+interpolator
+- for numbers it is a function that parameterizes changes to a single argument
+let i = d3.interpolateNumber(10, 20);
+i(0.0) // 10
+i(0.2) // 12
+i(0.5) // 15
+i(1.0) // 20
+
+d3 can interpolate everything from numbers, to colors, and even objects or strings
+- it does so by finding interpolatable parts of your argument and manipulating them linearly depending on the t parameter
+
+sometimes you need custom interpolators - tweens
+- i.e. animate an arc shape
+-- path definition arg is a complex string
+
+d3 lets us define custom transitions called tweens
+- to smoothly animate a piechart we can build an arcTween
+-- cuz piecharts are made of arcs
