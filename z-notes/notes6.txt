@@ -1,0 +1,83 @@
+Animation
+=========
+
+--- animation intro
+2 types of animation
+- game animation
+-- you have a lot of control
+-- you will have to come up with those controls
+- transitions
+-- less control
+-- less work on your side as well
+
+animation nutshell
+- render something
+- change it 60 times per second
+
+24 fps like old tvs often looks jaggeddy on modern monitors
+
+2 approaches to building animations
+game loops
+- more control
+
+transitions
+- easier to implement
+
+--- Using game loop for rich animations
+React is really fast
+So we do 60 diff frames 
+
+Game loop
+- infinite loop where each iteration renders the next frame of your animation
+- comes from video game industry
+-- each frame as its own static representation of the game state
+- take every object in the game and render it
+-- then throw it away
+-- make small adjustments and render again
+
+React can figure out a diff btw hierarchical representations of your scene and rerender the appropriate objects
+- Render a DOM from state
+- Change some values in the state
+- Trigger re-render
+
+
+Game loop animation with a bouncy ball
+--------------------------------------
+
+--- bouncy ball animation
+- d3.timer is better than setInterval
+
+gravity is an acceleration pointing down
+- it impacts the speed of the ball and not its position directly
+1 render the ball
+2 use an effect to start a timer with d3.timer
+- like setInterval but better
+3 ensure you clean up with timer.stop()
+4 move the ball on each timer iteration (also known as a tick)
+5 adjust the ball's speed to simulate gravity
+
+solution
+y and vy is part of [ball, setBall]
+
+useEffect
+function gameLoop 
+setBall(ball => {
+  let { y, vy } = ball;
+  // bounce
+  if (y > max_h) vy = -vy;
+  return {
+    y: y + vy,
+    vy: vy + 0.1
+  }
+})
+t = d3.timer(gameLoop)
+return () => t.stop()
+-- stops the timer when the component unmounts
+
+g transform
+circle
+
+physics
+- invert velocity when ground is reached
+- add velocity to position
+- add gravity to velocity
